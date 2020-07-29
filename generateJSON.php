@@ -78,8 +78,8 @@
             }
 
             $password = str_replace(".".$path_parts['extension'], "", $path_parts['basename']);
-            $p12 = strstr($path_parts['dirname'], "certificates/")."/".str_replace(".".$path_parts['extension'], ".p12", $path_parts['basename']);
-            $mobileprovision = strstr($path_parts['dirname'], "certificates/")."/".str_replace(".".$path_parts['extension'], ".mobileprovision", $path_parts['basename']);
+            $p12 = strstr($path_parts['dirname'], "certificates/")."/".urlencode(str_replace(".".$path_parts['extension'], ".p12", $path_parts['basename']));
+            $mobileprovision = strstr($path_parts['dirname'], "certificates/")."/".urlencode(str_replace(".".$path_parts['extension'], ".mobileprovision", $path_parts['basename']));
             
             if (openssl_pkcs12_read($cert_store, $cert_info, $password)) {
                 // echo "Certificate Information\n";
@@ -93,12 +93,12 @@
         
                 $certdata = array("validFrom" => $validFrom, "validTo" => $validTo, "displayName" => $displayName, "commonName" => $commonName);
                 
-                $p12URL = "https://github.com/JosephShenton/420Certs/blob/master/".urlencode($p12)."?raw=true";
-                $mobileprovisionURL = "https://github.com/JosephShenton/420Certs/blob/master/".urlencode($mobileprovision)."?raw=true";
+                $p12URL = "https://github.com/JosephShenton/420Certs/blob/master/".$p12."?raw=true";
+                $mobileprovisionURL = "https://github.com/JosephShenton/420Certs/blob/master/".$mobileprovision."?raw=true";
                 $certs["certificates"][] = array(
                     "information" => $certdata,
-                    "p12" => $p12,
-                    "mobileprovision" => $mobileprovision,
+                    "p12" => $p12URL,
+                    "mobileprovision" => $mobileprovisionURL,
                     "password" => $password
                 );
 
